@@ -1,0 +1,197 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Leaderboard API",
+    "description": "Leaderboard API build with node.js, express, typescript",
+    "license": {
+      "name": "MIT",
+      "url": "https://opensource.org/licenses/MIT"
+    },
+    "servers": [
+      {
+        "url": "/api/v1",
+        "description": "API V1"
+      }
+    ]
+  },
+  "paths": {
+    "/api/v1/categories": {
+      "get": {
+        "tags": ["Categories"],
+        "summary": "Returns all categories",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Categories"
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["Categories"],
+        "summary": "Create a new category",
+        "requestBody": {
+          "description": "Category object",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/definitions/Category"
+              }
+            }
+          }
+        },
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/id"
+            }
+          },
+          "400": {
+            "description": "Failed. Bad post data."
+          }
+        }
+      }
+    },
+    "/api/v1/categories/{id}": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "description": "ID of the category that we want to match",
+          "type": "string"
+        }
+      ],
+      "get": {
+        "tags": ["Categories"],
+        "summary": "Get category with given ID",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "Category with id",
+            "schema": {
+              "$ref": "#/definitions/id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Category"
+            }
+          },
+          "404": {
+            "description": "Failed. Category not found."
+          }
+        }
+      },
+      "put": {
+        "summary": "Update category with given ID",
+        "tags": ["Categories"],
+        "requestBody": {
+          "description": "Category Object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/definitions/Category"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "Cat with new values of properties",
+            "schema": {
+              "$ref": "#/definitions/id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Category"
+            }
+          },
+          "400": {
+            "description": "Failed. Bad post data."
+          },
+          "404": {
+            "description": "Failed. Cat not found."
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete Category with given ID",
+        "tags": ["Categories"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "Delete Category with id",
+            "schema": {
+              "$ref": "#/definitions/id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/id"
+            }
+          },
+          "404": {
+            "description": "Failed. Category not found."
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "id": {
+      "properties": {
+        "uuid": {
+          "type": "number"
+        }
+      }
+    },
+    "Category": {
+      "type": "object",
+      "required": ["name"],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "imageUrl": {
+          "type": "string"
+        }
+      }
+    },
+    "Categories": {
+      "type": "object",
+      "properties": {
+        "categories": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/Category"
+          }
+        }
+      }
+    }
+  },
+  "consumes": ["application/json"],
+  "produces": ["application/json"]
+}
